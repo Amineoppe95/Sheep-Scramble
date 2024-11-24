@@ -5711,6 +5711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 166982c959e8ba848a150465295dab90, type: 2}
   selectionMaterial: {fileID: 2100000, guid: 58b3737cacf46cc44991c171424dacbe, type: 2}
+  forceMultiplier: 10
 --- !u!1001 &968305706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9161,7 +9162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1590523690
 Transform:
   m_ObjectHideFlags: 0
@@ -9186,7 +9187,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1590523688}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cd63dfc2b445ba4ba2b1aa4513e4622, type: 3}
   m_Name: 
@@ -10035,7 +10036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8975491809514817015, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -10876,8 +10877,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8975491809514817015, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
+      propertyPath: m_Constraints
+      value: 116
+      objectReference: {fileID: 0}
+    - target: {fileID: 8975491809514817015, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}

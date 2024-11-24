@@ -63,6 +63,7 @@ public class Selection : MonoBehaviour
         {
             if (highlight)
             {
+                print("Highlighted");
                 // If an object is already selected, revert its material
                 if (selection != null)
                 {
@@ -79,10 +80,11 @@ public class Selection : MonoBehaviour
                 }
 
                 // Start drag if object has DirectionChanger script
-                if (selection.GetComponent<DirectionChanger>() != null)
+                if (selection.parent.GetComponent<DirectionChanger>() != null)
                 {
                     mouseStartPosition = Input.mousePosition;
                     isDragging = true;
+                    print("DirectionChanger Selected isdragging true");
                 }
 
                 // Reset highlight once an object is selected
@@ -102,8 +104,9 @@ public class Selection : MonoBehaviour
 
     void HandleDragging()
     {
-        if (isDragging && selection != null && Input.GetMouseButton(0))
+        if (isDragging && selection.parent != null && Input.GetMouseButtonDown(0))
         {
+            print("Mouse button down to drag");
             // Convert mouse position to a 3D world position
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  // Camera-based raycast
             if (Physics.Raycast(ray, out RaycastHit hit))
@@ -114,6 +117,7 @@ public class Selection : MonoBehaviour
                 Rigidbody rb = selection.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
+                    print("rb found");
                     Vector3 forceDirection = (targetPosition - selection.position).normalized;
                     rb.AddForce(forceDirection * forceMultiplier, ForceMode.Impulse);
                 }
