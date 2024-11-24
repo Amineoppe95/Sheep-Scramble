@@ -25,14 +25,12 @@ public class SheepBehavior : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
 
         // Automatically calculate rayDistance if a BoxCollider is attached
-        if (boxCollider != null)
-        {
-            rayDistance = boxCollider.bounds.extents.y + 0.1f; // Default value with a small buffer
-        }
-        else
-        {
-            Debug.LogWarning("BoxCollider not found on the sheep!");
-        }
+
+        //if (boxCollider != null)
+        //{
+        //    rayDistance = boxCollider.bounds.extents.y + 0.1f; // Default value with a small buffer
+        //}
+         
 
         currentSpeed = 0f;                // Start with 0 speed
         animator.SetFloat("Speed", 0f);   // Ensure animation starts as idle
@@ -121,8 +119,7 @@ public class SheepBehavior : MonoBehaviour
         {
             Vector3 rayOrigin = boxCollider.bounds.center + currentDirection * boxCollider.bounds.extents.z * 0.5f;
             Gizmos.color = Color.red; // Use green for the gizmo
-            Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayDistance);
-            Gizmos.DrawSphere(rayOrigin, 0.05f);
+            Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayDistance); 
         }
     }
 }
