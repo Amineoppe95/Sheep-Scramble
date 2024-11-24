@@ -4,15 +4,17 @@ public class DirectionChanger : MonoBehaviour
 {
     public enum Direction
     {
-        Left,
-        Right,
-        Backward,
-        Forward
+        Left = 1 ,
+        Right = 2 ,
+        Backward = 3,
+        Forward = 4
     }
     public Transform cubeTransform;
     [Tooltip("The new direction the sheep should move in when it enters this cube.")]
     public Direction newDirection = Direction.Right;
 
+    public int DirValue = 0;
+    
     private void OnTriggerEnter(Collider other)
     {
         // Check if the object entering the trigger is a sheep
@@ -22,6 +24,7 @@ public class DirectionChanger : MonoBehaviour
             // Map the enum to the corresponding Vector3 direction
             Vector3 directionVector = GetDirectionVector(newDirection);
             // Change the sheep's direction
+            DirValue = (int)newDirection;
             sheep.transform.position = cubeTransform.position;            
             sheep.ChangeDirection(directionVector);
             

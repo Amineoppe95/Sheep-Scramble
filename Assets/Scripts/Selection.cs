@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,6 +20,8 @@ public class Selection : MonoBehaviour
     public float forceMultiplier = 10f;            // Multiplier for the applied force
 
     private Rigidbody rb;                          // Rigidbody of the selected object
+
+    public DirectionChanger SelectedObject = null ;
 
     void Update()
     {
@@ -46,6 +49,8 @@ public class Selection : MonoBehaviour
             if (hitObject.CompareTag("Ground") && hitObject.GetComponent<Rigidbody>() != null && hitObject != selection)
             {
                 highlight = hitObject;
+               
+            
 
                 // If the object is not already highlighted, change its material
                 if (highlight.GetComponent<MeshRenderer>().material != highlightMaterial)
@@ -65,6 +70,8 @@ public class Selection : MonoBehaviour
         {
             if (highlight)
             {
+                SelectedObject = highlight.parent.GetComponent<DirectionChanger>();
+
                 print("Highlighted");
                 // If an object is already selected, revert its material
                 if (selection != null)
@@ -105,5 +112,33 @@ public class Selection : MonoBehaviour
         }
     }
 
+
+    public void CangeDirection(int Dirvalue)
+    {
+
+        // SelectedObject
+        if (Dirvalue == 1)
+        {
+            print(Dirvalue + "Left");
+            SelectedObject.newDirection = DirectionChanger.Direction.Left;
+        }
+        if (Dirvalue == 2)
+        {
+            print(Dirvalue + "Right");
+            SelectedObject.newDirection = DirectionChanger.Direction.Right;
+        } 
+        if (Dirvalue == 3)
+        {
+            print(Dirvalue + "Backward");
+            SelectedObject.newDirection = DirectionChanger.Direction.Backward;
+        }
+        if (Dirvalue == 4 )
+        {
+            print(Dirvalue + "Forward");
+            SelectedObject.newDirection = DirectionChanger.Direction.Forward;
+        }
+
+        
+    }
      
 }
