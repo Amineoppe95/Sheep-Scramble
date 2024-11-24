@@ -945,7 +945,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7222202838548768308}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f3428ba1764d30845a9fc4890ba2c61f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -957,8 +957,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1220944, y: 2.4134672, z: 2.4331229}
-  m_Center: {x: -0.027057104, y: 1.2539172, z: 0.10607584}
+  m_Size: {x: 2.1220944, y: 2.4134672, z: 0.44373718}
+  m_Center: {x: -0.027057104, y: 1.2539172, z: -0.09203218}
 --- !u!54 &8539785585744937920
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -968,8 +968,8 @@ Rigidbody:
   m_GameObject: {fileID: 7222202838548768308}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 0.5
+  m_AngularDrag: 0.1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -999,10 +999,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
-  rayDistance: 1
   speedStartCooldown: 1
   animator: {fileID: 7509744409055414019}
   gravityScale: -0.25
+  rayDistance: 1
 --- !u!1 &7769237192435363946
 GameObject:
   m_ObjectHideFlags: 0

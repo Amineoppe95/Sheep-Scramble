@@ -62,7 +62,7 @@ public class SheepBehavior : MonoBehaviour
         }
         else
         {
-            rb.useGravity = false; // Disable default gravity
+            // rb.useGravity = false; // Disable default gravity
             rb.AddForce(Vector3.down * gravityScale * Physics.gravity.y, ForceMode.Acceleration); // Apply custom gravity
             animator.applyRootMotion = false;
             animator.SetBool("Grounded", false);
@@ -97,14 +97,23 @@ public class SheepBehavior : MonoBehaviour
         // Update the sheep's direction
         float targetAngle = 0f;
 
-        if (newDirection == Vector3.right)        // Right
+        if (newDirection == Vector3.right)
+        {      // Right
+            print("right");
             targetAngle = -90f;
+        }
         else if (newDirection == Vector3.left)   // Left
             targetAngle = 90f;
         else if (newDirection == Vector3.forward) // Forward
+        {
+            print("forward");
             targetAngle = 0f;
+        }
         else if (newDirection == Vector3.back)   // Backward
+        { 
+            print("back");
             targetAngle = 180f;
+        }
 
         currentDirection = newDirection.normalized;
 
