@@ -14,7 +14,17 @@ public class Selection : MonoBehaviour
     private Transform selection;                    // Transform of the selected object
     private RaycastHit raycastHit;                  // Raycast hit data
 
+    private Vector3 mouseStartPosition;            // Starting position of the mouse
+    private bool isDragging = false;               // Flag to check if dragging is in progress
+    public float forceMultiplier = 10f;            // Multiplier for the applied force
+
     void Update()
+    {
+        SelectionViusualLogic();
+        HandleDragging();
+    }
+
+    void SelectionViusualLogic()
     {
         // Highlight logic
         if (highlight != null)
@@ -23,7 +33,7 @@ public class Selection : MonoBehaviour
             highlight = null;  // Reset the highlighted object
         }
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  // Raycasting from camera to 3D world
 
         // Ensure raycast is not over UI and is hitting a valid object
         if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit))
@@ -68,6 +78,13 @@ public class Selection : MonoBehaviour
                     selection.GetComponent<MeshRenderer>().material = selectionMaterial;  // Change material to selection
                 }
 
+                // Start drag if object has DirectionChanger script
+                if (selection.GetComponent<DirectionChanger>() != null)
+                {
+                    mouseStartPosition = Input.mousePosition;
+                    isDragging = true;
+                }
+
                 // Reset highlight once an object is selected
                 highlight = null;
             }
@@ -80,6 +97,33 @@ public class Selection : MonoBehaviour
                     selection = null;  // Deselect object
                 }
             }
+        }
+    }
+
+    void HandleDragging()
+    {
+        if (isDragging && selection != null && Input.GetMouseButton(0))
+        {
+            // Convert mouse position to a 3D world position
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  // Camera-based raycast
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Vector3 targetPosition = hit.point;  // Get the point in 3D space where the mouse is pointing
+
+                // Apply force to move the object towards the target position
+                Rigidbody rb = selection.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    Vector3 forceDirection = (targetPosition - selection.position).normalized;
+                    rb.AddForce(forceDirection * forceMultiplier, ForceMode.Impulse);
+                }
+            }
+        }
+
+        // Stop dragging on mouse release
+        if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
         }
     }
 }

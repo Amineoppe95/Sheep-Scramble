@@ -2,31 +2,42 @@ using UnityEngine;
 
 public class SheepBehavior : MonoBehaviour
 {
-    public float moveSpeed = 2f;         // Desired speed of the sheep
-    public float rayDistance = 1f;      // Distance for edge detection using a downward ray
+    public float moveSpeed = 2f;           // Desired speed of the sheep
     public float speedStartCooldown = 3f; // Time to wait before setting the speed
 
     private Rigidbody rb;
-    public Animator animator;           // Reference to the Animator
+    public Animator animator;             // Reference to the Animator
     private Vector3 currentDirection = Vector3.forward; // Default direction
 
-    private float currentSpeed = 0f;    // Current speed of the sheep
-    private float speedTimer = 0f;      // Timer to track the cooldown
+    private float currentSpeed = 0f;      // Current speed of the sheep
+    private float speedTimer = 0f;        // Timer to track the cooldown
 
-    private bool isGrounded = true;
+    private bool isGrounded = true;       // State tracking for grounded status
+    public float gravityScale = 1f;       // Gravity multiplier adjustable in the Inspector
 
-    public float gravityScale = 1f; // Gravity multiplier adjustable in the Inspector
-
+    private BoxCollider boxCollider;      // Reference to the sheep's BoxCollider
+    [SerializeField, Tooltip("Distance for the ground detection ray")]
+    private float rayDistance;            // Adjustable ray distance
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        currentSpeed = 0f;              // Start with 0 speed
-        animator.SetFloat("Speed", 0f); // Ensure animation starts as idle
+        boxCollider = GetComponent<BoxCollider>();
 
-        isGrounded = IsGroundAhead();
-        
+        // Automatically calculate rayDistance if a BoxCollider is attached
+        if (boxCollider != null)
+        {
+            rayDistance = boxCollider.bounds.extents.y + 0.1f; // Default value with a small buffer
+        }
+        else
+        {
+            Debug.LogWarning("BoxCollider not found on the sheep!");
+        }
 
+        currentSpeed = 0f;                // Start with 0 speed
+        animator.SetFloat("Speed", 0f);   // Ensure animation starts as idle
+
+        isGrounded = IsGroundAhead();     // Initialize grounded status
     }
 
     void FixedUpdate()
@@ -41,11 +52,14 @@ public class SheepBehavior : MonoBehaviour
             currentSpeed = moveSpeed; // Set the speed to the desired value after cooldown
         }
 
-        if (IsGroundAhead())
+        bool grounded = IsGroundAhead();
+
+        if (grounded)
         {
             rb.useGravity = true; // Enable Unity's default gravity
             animator.applyRootMotion = true;
             animator.SetBool("Grounded", true);
+            print("Grounded!");
             MoveForward();
         }
         else
@@ -58,25 +72,26 @@ public class SheepBehavior : MonoBehaviour
         }
     }
 
-
     void MoveForward()
     {
         // Move the sheep in the forward direction with the current speed
         transform.Translate(transform.forward * currentSpeed * Time.fixedDeltaTime, Space.World);
 
         // Update the animator's Speed parameter
-       
         animator.SetFloat("Speed", currentSpeed);
     }
 
     bool IsGroundAhead()
     {
-        Vector3 rayOrigin = transform.position + currentDirection * 0.5f;
+        // Calculate the ray origin based on the current direction and collider center
+        Vector3 rayOrigin = boxCollider.bounds.center + currentDirection * boxCollider.bounds.extents.z * 0.5f;
+
         Ray ray = new Ray(rayOrigin, Vector3.down);
 
-        Debug.DrawRay(rayOrigin, Vector3.down * rayDistance, Color.red); // Debug ray for visualization
+        Debug.DrawRay(rayOrigin, Vector3.down * rayDistance, Color.red); // Visualize the ray
 
-        return Physics.Raycast(ray, rayDistance);
+        // Check if the ray hits an object tagged as "Ground"
+        return Physics.Raycast(ray, out RaycastHit hit, rayDistance) && hit.collider.CompareTag("Ground");
     }
 
     public void ChangeDirection(Vector3 newDirection)
@@ -100,19 +115,14 @@ public class SheepBehavior : MonoBehaviour
         transform.rotation = targetRotation;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Vector3 rayOrigin = transform.position + currentDirection * 0.5f;
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayDistance);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Ground"))
+        if (boxCollider != null)
         {
-            animator.applyRootMotion = true;
-            animator.SetBool("Grounded", true);
+            Vector3 rayOrigin = boxCollider.bounds.center + currentDirection * boxCollider.bounds.extents.z * 0.5f;
+            Gizmos.color = Color.red; // Use green for the gizmo
+            Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayDistance);
+            Gizmos.DrawSphere(rayOrigin, 0.05f);
         }
     }
 }
