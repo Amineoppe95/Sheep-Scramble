@@ -40,11 +40,24 @@ public class SheepBehavior : MonoBehaviour
     public void ChangeDirection(Vector3 newDirection)
     {
         // Update the sheep's direction
-       // currentDirection = newDirection.normalized;
-        transform.rotation = Quaternion.Euler(0, transform.rotation.y +  -90f , 0 );
+        // currentDirection = newDirection.normalized;
+        float targetAngle = 0f;
+
+        if (newDirection == Vector3.right)        // Right
+            targetAngle = -90f;
+        else if (newDirection == Vector3.left)   // Left
+            targetAngle =  90f;
+        else if (newDirection == Vector3.down)   // Forward ... up   
+            targetAngle =  0;
+        else if (newDirection == Vector3.up) // Backward ... down
+            targetAngle = 180f;
+
+        transform.rotation = Quaternion.Euler(0, transform.rotation.y + targetAngle , 0 );
 
 
     }
+
+    
 
     private void OnDrawGizmosSelected()
     {

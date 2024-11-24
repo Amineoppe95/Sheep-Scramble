@@ -25,11 +25,7 @@ public class DirectionChanger : MonoBehaviour
             sheep.ChangeDirection(directionVector);
         }
     }
-    void OnTriggerExit(Collider other)
-    {     
-   
-    }
-
+    
 
     private Vector3 GetDirectionVector(Direction direction)
     {
@@ -40,9 +36,9 @@ public class DirectionChanger : MonoBehaviour
             case Direction.Right:
                 return Vector3.right;
             case Direction.Backward:
-                return Vector3.back;
+                return Vector3.down;
             case Direction.Forward:
-                return Vector3.forward;
+                return Vector3.up;
             default:
                 return Vector3.zero; // Default to no movement if direction is invalid
         }
