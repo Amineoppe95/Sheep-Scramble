@@ -5709,9 +5709,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69570742f30bd942beeae51f9171da8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightMaterial: {fileID: 2100000, guid: 166982c959e8ba848a150465295dab90, type: 2}
-  selectionMaterial: {fileID: 2100000, guid: 58b3737cacf46cc44991c171424dacbe, type: 2}
-  forceMultiplier: 10
+  highlightMaterial: {fileID: 2100000, guid: 72df91c15fa84974ca9d1980418b160b, type: 2}
+  selectionMaterial: {fileID: 2100000, guid: b8f2a20eeb2d3c141b67069c0d473997, type: 2}
+  forceMultiplier: 1
 --- !u!1001 &968305706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9162,7 +9162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1590523690
 Transform:
   m_ObjectHideFlags: 0
@@ -9956,7 +9956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3431834238600957645, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3431834238600957645, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: m_TagString
@@ -10798,7 +10798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3431834238600957645, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3431834238600957645, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: m_TagString
@@ -10867,6 +10867,10 @@ PrefabInstance:
     - target: {fileID: 5725311275719866375, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 8733281578217357444, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8733281578217357444, guid: 9d630e7877c331e4f87709af7e83fef5, type: 3}
       propertyPath: newDirection

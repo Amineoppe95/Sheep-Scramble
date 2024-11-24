@@ -18,10 +18,12 @@ public class Selection : MonoBehaviour
     private bool isDragging = false;               // Flag to check if dragging is in progress
     public float forceMultiplier = 10f;            // Multiplier for the applied force
 
+    private Rigidbody rb;                          // Rigidbody of the selected object
+
     void Update()
     {
         SelectionViusualLogic();
-        HandleDragging();
+       
     }
 
     void SelectionViusualLogic()
@@ -40,7 +42,7 @@ public class Selection : MonoBehaviour
         {
             Transform hitObject = raycastHit.transform;
 
-            // Only highlight objects with the "Grounded" tag and having a Rigidbody
+            // Only highlight objects with the "Ground" tag and having a Rigidbody
             if (hitObject.CompareTag("Ground") && hitObject.GetComponent<Rigidbody>() != null && hitObject != selection)
             {
                 highlight = hitObject;
@@ -84,6 +86,7 @@ public class Selection : MonoBehaviour
                 {
                     mouseStartPosition = Input.mousePosition;
                     isDragging = true;
+                    rb = selection.GetComponent<Rigidbody>(); // Get the Rigidbody when dragging starts
                     print("DirectionChanger Selected isdragging true");
                 }
 
@@ -102,32 +105,5 @@ public class Selection : MonoBehaviour
         }
     }
 
-    void HandleDragging()
-    {
-        if (isDragging && selection.parent != null && Input.GetMouseButtonDown(0))
-        {
-            print("Mouse button down to drag");
-            // Convert mouse position to a 3D world position
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  // Camera-based raycast
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                Vector3 targetPosition = hit.point;  // Get the point in 3D space where the mouse is pointing
-
-                // Apply force to move the object towards the target position
-                Rigidbody rb = selection.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    print("rb found");
-                    Vector3 forceDirection = (targetPosition - selection.position).normalized;
-                    rb.AddForce(forceDirection * forceMultiplier, ForceMode.Impulse);
-                }
-            }
-        }
-
-        // Stop dragging on mouse release
-        if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-        }
-    }
+     
 }
