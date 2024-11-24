@@ -113,6 +113,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeTransform: {fileID: 2108827251978274926}
   newDirection: 3
+  onDirectionValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  Arrow: {fileID: 6606458355568547583}
 --- !u!65 &5761287002267251335
 BoxCollider:
   m_ObjectHideFlags: 0
