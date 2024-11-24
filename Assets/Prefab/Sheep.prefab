@@ -998,10 +998,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9fab588bfd1a5d4f911ea0fe996c80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 2.5
   rayDistance: 1
-  speedStartCooldown: 3
+  speedStartCooldown: 1
   animator: {fileID: 7509744409055414019}
+  gravityScale: -0.25
 --- !u!1 &7769237192435363946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,7 +1962,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 969af021aaeb67a4eae8e9c611b8dcd9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0

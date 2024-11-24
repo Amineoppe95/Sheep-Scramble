@@ -13,11 +13,20 @@ public class SheepBehavior : MonoBehaviour
     private float currentSpeed = 0f;    // Current speed of the sheep
     private float speedTimer = 0f;      // Timer to track the cooldown
 
+    private bool isGrounded = true;
+
+    public float gravityScale = 1f; // Gravity multiplier adjustable in the Inspector
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         currentSpeed = 0f;              // Start with 0 speed
         animator.SetFloat("Speed", 0f); // Ensure animation starts as idle
+
+        isGrounded = IsGroundAhead();
+        
+
     }
 
     void FixedUpdate()
@@ -32,14 +41,23 @@ public class SheepBehavior : MonoBehaviour
             currentSpeed = moveSpeed; // Set the speed to the desired value after cooldown
         }
 
-        MoveForward();
-
-        if (!IsGroundAhead())
+        if (IsGroundAhead())
         {
-            rb.useGravity = true;
-            animator.SetFloat("Speed", 0f); // Stop animation if no ground ahead
+            rb.useGravity = true; // Enable Unity's default gravity
+            animator.applyRootMotion = true;
+            animator.SetBool("Grounded", true);
+            MoveForward();
+        }
+        else
+        {
+            rb.useGravity = false; // Disable default gravity
+            rb.AddForce(Vector3.down * gravityScale * Physics.gravity.y, ForceMode.Acceleration); // Apply custom gravity
+            animator.applyRootMotion = false;
+            animator.SetBool("Grounded", false);
+            print("Not on ground");
         }
     }
+
 
     void MoveForward()
     {
@@ -47,6 +65,7 @@ public class SheepBehavior : MonoBehaviour
         transform.Translate(transform.forward * currentSpeed * Time.fixedDeltaTime, Space.World);
 
         // Update the animator's Speed parameter
+       
         animator.SetFloat("Speed", currentSpeed);
     }
 
@@ -86,5 +105,14 @@ public class SheepBehavior : MonoBehaviour
         Vector3 rayOrigin = transform.position + currentDirection * 0.5f;
         Gizmos.color = Color.red;
         Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayDistance);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            animator.applyRootMotion = true;
+            animator.SetBool("Grounded", true);
+        }
     }
 }

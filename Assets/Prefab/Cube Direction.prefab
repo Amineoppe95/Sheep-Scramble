@@ -325,6 +325,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile Top 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3196648517536708714, guid: 3d3e1647da524af438765070d6d4fc6c, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 5114996075067899094, guid: 3d3e1647da524af438765070d6d4fc6c, type: 3}
       propertyPath: m_RootOrder
       value: 1
