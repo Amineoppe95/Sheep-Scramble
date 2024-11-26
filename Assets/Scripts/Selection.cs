@@ -115,30 +115,45 @@ public class Selection : MonoBehaviour
 
     public void CangeDirection(int Dirvalue)
     {
-
-        // SelectedObject
-        if (Dirvalue == 1)
-        {
-            print(Dirvalue + "Left");
-            SelectedObject.newDirection = DirectionChanger.Direction.Left;
-        }
-        if (Dirvalue == 2)
-        {
-            print(Dirvalue + "Right");
-            SelectedObject.newDirection = DirectionChanger.Direction.Right;
-        } 
-        if (Dirvalue == 3)
-        {
-            print(Dirvalue + "Backward");
-            SelectedObject.newDirection = DirectionChanger.Direction.Backward;
-        }
-        if (Dirvalue == 4 )
-        {
-            print(Dirvalue + "Forward");
-            SelectedObject.newDirection = DirectionChanger.Direction.Forward;
+        if (SelectedObject == null)
+        { 
+            return; // Exit the method if there is no selected object
         }
 
+
+        if (Dirvalue != 0 )
+        {
+            // SelectedObject
+            if (Dirvalue == 1)
+            {
+                print(Dirvalue + "Left");
+                SelectedObject.newDirection = DirectionChanger.Direction.Left;
+
+            }
+            if (Dirvalue == 2)
+            {
+                print(Dirvalue + "Right");
+                SelectedObject.newDirection = DirectionChanger.Direction.Right;
+
+            }
+            if (Dirvalue == 3)
+            {
+                print(Dirvalue + "Backward");
+                SelectedObject.newDirection = DirectionChanger.Direction.Backward;
+
+            }
+            if (Dirvalue == 4)
+            {
+                print(Dirvalue + "Forward");
+                SelectedObject.newDirection = DirectionChanger.Direction.Forward;
+            }
+
+
+            SelectedObject.OnArrowChangeDir(Dirvalue);
+        }
         
+     
+
     }
      
 }

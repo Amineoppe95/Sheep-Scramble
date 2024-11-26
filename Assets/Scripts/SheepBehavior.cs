@@ -7,7 +7,7 @@ public class SheepBehavior : MonoBehaviour
 
     private Rigidbody rb;
     public Animator animator;             // Reference to the Animator
-    private Vector3 currentDirection = Vector3.forward; // Default direction
+    private Vector3 currentDirection = Vector3.back; // Default direction
 
     private float currentSpeed = 0f;      // Current speed of the sheep
     private float speedTimer = 0f;        // Timer to track the cooldown
@@ -18,6 +18,7 @@ public class SheepBehavior : MonoBehaviour
     private BoxCollider boxCollider;      // Reference to the sheep's BoxCollider
     [SerializeField, Tooltip("Distance for the ground detection ray")]
     private float rayDistance;            // Adjustable ray distance
+     
 
     void Start()
     {
@@ -40,6 +41,7 @@ public class SheepBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+
         // Gradually increase speed after cooldown
         if (speedTimer < speedStartCooldown)
         {
@@ -62,7 +64,7 @@ public class SheepBehavior : MonoBehaviour
         }
         else
         {
-            // rb.useGravity = false; // Disable default gravity
+            rb.useGravity = false; // Disable default gravity
             rb.AddForce(Vector3.down * gravityScale * Physics.gravity.y, ForceMode.Acceleration); // Apply custom gravity
             animator.applyRootMotion = false;
             animator.SetBool("Grounded", false);
@@ -82,7 +84,9 @@ public class SheepBehavior : MonoBehaviour
     bool IsGroundAhead()
     {
         // Calculate the ray origin based on the current direction and collider center
-        Vector3 rayOrigin = boxCollider.bounds.center + currentDirection * boxCollider.bounds.extents.z * 0.5f;
+      //  Vector3 rayOrigin = boxCollider.bounds.center + currentDirection * boxCollider.bounds.extents.z * 0.5f;
+        Vector3 rayOrigin = boxCollider.bounds.center - transform.forward * boxCollider.bounds.extents.z;
+
 
         Ray ray = new Ray(rayOrigin, Vector3.down);
 
@@ -97,23 +101,14 @@ public class SheepBehavior : MonoBehaviour
         // Update the sheep's direction
         float targetAngle = 0f;
 
-        if (newDirection == Vector3.right)
-        {      // Right
-            print("right");
+        if (newDirection == Vector3.right)        // Right
             targetAngle = -90f;
-        }
         else if (newDirection == Vector3.left)   // Left
             targetAngle = 90f;
         else if (newDirection == Vector3.forward) // Forward
-        {
-            print("forward");
             targetAngle = 0f;
-        }
         else if (newDirection == Vector3.back)   // Backward
-        { 
-            print("back");
             targetAngle = 180f;
-        }
 
         currentDirection = newDirection.normalized;
 
@@ -126,9 +121,43 @@ public class SheepBehavior : MonoBehaviour
     {
         if (boxCollider != null)
         {
-            Vector3 rayOrigin = boxCollider.bounds.center + currentDirection * boxCollider.bounds.extents.z * 0.5f;
+           // Vector3 rayOrigin = boxCollider.bounds.center + currentDirection * boxCollider.bounds.extents.z * 0.5f;
+            Vector3 rayOrigin = boxCollider.bounds.center - transform.forward * boxCollider.bounds.extents.z;
+
             Gizmos.color = Color.red; // Use green for the gizmo
             Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayDistance); 
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "DeathZonne")
+        {
+            print(other.name + " Has entered DeathZonne !");
+            SheepManager.instance.ResetFirstSheep(); 
+        }
+
+
+        if (other.gameObject.tag == "Finish")
+        {
+            print( " winwin !");
+            MainUICanvas.intance.WinWin();
+        }
+
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "DeathZonne")
+        {
+           Destroy(this.gameObject); //
+        }
+         
+            if (SheepManager.instance.Sheeps.Count <= 0)
+            {
+                print("GameOver");
+                MainUICanvas.intance.LoseLose();
+            }
+    }
+
+
 }

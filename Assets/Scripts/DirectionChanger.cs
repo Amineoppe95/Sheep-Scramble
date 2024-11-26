@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class DirectionChanger : MonoBehaviour
 {
+    [Tooltip("The new direction the sheep should move in when it enters this cube.")]
     public enum Direction
     {
         Left = 1 ,
@@ -11,28 +13,70 @@ public class DirectionChanger : MonoBehaviour
         Forward = 4
     }
     public Transform cubeTransform;
-    [Tooltip("The new direction the sheep should move in when it enters this cube.")]
+
     public Direction newDirection = Direction.Right;
     // Event that will be triggered when direction changes
-    public UnityEvent<int> onDirectionValueChanged;
-    public Transform Arrow;
-    // Private backing field for DirValue
+  
+    public Transform ArrowDir;
+    public float ArrowParentYrot = 0; 
     public int dirValue = 0;
-    public int DirValue
+
+
+    private void Start()
+    {
+        OnArrowChangeDir(1);
+        OnArrowChangeDir(2);
+        OnArrowChangeDir(3);
+        OnArrowChangeDir(4);
+    }
+
+    #region DictionarydirectionRotations
+
+    // Dictionary to map Direction enums to rotation values
+    private readonly Dictionary<Direction, float> directionRotations = new Dictionary<Direction, float>
+    {
+        { Direction.Left, 180f },
+        { Direction.Right, 0f },
+        { Direction.Backward, 90f },
+        { Direction.Forward, -90f }
+    };
+
+    public void OnArrowChangeDir(int dirValue)
+    {
+        // Check if the input integer corresponds to a valid Direction enum
+        if (System.Enum.IsDefined(typeof(Direction), dirValue))
         {
-        get => dirValue;
-        set
-        {
-            // Only trigger if the value actually changes
-            if (dirValue != value)
+            // Convert the integer to the corresponding Direction enum
+            Direction selectedDirection = (Direction)dirValue;
+            
+
+            // Use the dictionary to retrieve the rotation value
+            if (directionRotations.TryGetValue(selectedDirection, out float yRotation))
             {
-                dirValue = value;
-                OnDirValueChanged();
-}
+                ArrowParentYrot = yRotation;
+                ArrowDir.rotation = Quaternion.Euler(0, yRotation, 0); 
+            }
+            else
+            {
+                Debug.LogWarning("No rotation defined for this direction.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Invalid direction value: " + dirValue);
         }
     }
 
-private void OnTriggerEnter(Collider other)
+
+    #endregion
+
+
+
+    private void Update()
+    {
+        ArrowDir.rotation = Quaternion.Euler(0, ArrowParentYrot, 0);
+    }
+    private void OnTriggerEnter(Collider other)
     {
         // Check if the object entering the trigger is a sheep
         SheepBehavior sheep = other.GetComponent<SheepBehavior>();
@@ -41,7 +85,7 @@ private void OnTriggerEnter(Collider other)
             // Map the enum to the corresponding Vector3 direction
             Vector3 directionVector = GetDirectionVector(newDirection);
             // Change the sheep's direction
-            DirValue = (int)newDirection;
+            dirValue = (int) newDirection;
             sheep.transform.position = cubeTransform.position;            
             sheep.ChangeDirection(directionVector);
             
@@ -65,29 +109,6 @@ private void OnTriggerEnter(Collider other)
                 return Vector3.zero; // Default to no movement if direction is invalid
         }
     }
-
-    // Method that gets called when DirValue changes
-    private void OnDirValueChanged()
-    {
-        // Invoke the UnityEvent with the new value
-        onDirectionValueChanged.Invoke(dirValue);
-        print("CHANGED");
-        switch (dirValue)
-        {
-            case 1:
-                Arrow.rotation = Quaternion.Euler(90f, 0f, 90f); 
-                break;  // Add break statement
-            case 2:
-                Arrow.rotation = Quaternion.Euler(90f, 0f, -90f);
-                break;  // Add break statement
-            case 3:
-                Arrow.rotation = Quaternion.Euler(90f, 0f, 180f);
-                break;  // Add break statement
-            case 4:
-                Arrow.rotation = Quaternion.Euler(90f, 0f, 0f);
-                break;  // Add break statement
-        }
-        // You can add additional logic here that should happen when the direction changes
-        Debug.Log($"Direction changed to: {(Direction)dirValue}");
-    }
+     
+  
 }
